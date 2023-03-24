@@ -1,0 +1,63 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>BlazorMud</PageTitle>
+
+<MudThemeProvider Theme=_customTheme @bind-IsDarkMode=@_isDarkMode />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar>
+        <div class="d-flex justify-space-between flex-grow-1">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick=@((e) => ToggleDrawer()) />
+            <div class="d-flex gap-4">
+                <MudIconButton Icon=@_darkIconStyle Size="Size.Large" OnClick=@(() => ToggleDarkMode()) />
+            </div>
+        </div>
+    </MudAppBar>
+    <MudDrawer @bind-Open=@_drawerOpen>
+        <MyNavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer Fixed="true" Class="mt-5">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = false;
+    bool _isDarkMode = false;
+    string _darkIconStyle = Icons.Material.Outlined.LightMode;
+
+    MudTheme _customTheme = new MudTheme
+        {
+
+            Typography = new Typography
+            {
+                Default = new Default
+                {
+                    FontFamily = new[] { "Roboto", "Helvetica", "Arial", "sans-serif" }
+                },
+                H1 = new H1
+                {
+                    FontSize = "3rem"
+                },
+                H2 = new H2
+                {
+                    FontSize = "2rem"
+                }
+            }
+        };
+
+     void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    void ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+        _darkIconStyle = _isDarkMode ? Icons.Material.Outlined.Nightlight : Icons.Material.Outlined.LightMode;
+    }
+}
